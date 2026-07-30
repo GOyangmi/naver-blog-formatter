@@ -1,0 +1,16 @@
+GitHub Pages 사용자: GOyangmi
+사용할 도메인: subpathlaboratory.com
+
+루트 도메인 A 레코드 (@):
+185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
+
+www CNAME:
+GOyangmi.github.io
+
+중요:
+- 기존 웹사이트가 연결돼 있다면 A/CNAME 변경 전에 영향을 확인하세요.
+- Google Workspace 메일용 MX 레코드와 도메인 인증용 TXT 레코드는 삭제하지 마세요.
+- GitHub 저장소 Settings > Pages에서 Custom domain과 HTTPS 상태를 확인하세요.

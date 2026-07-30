@@ -1,0 +1,17 @@
+{
+  "name": "원문결 문단 정리기",
+  "short_name": "원문결",
+  "description": "원문을 바꾸지 않고 문단과 줄바꿈만 정리하는 브라우저 도구",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f6f7f4",
+  "theme_color": "#0b7a46",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
