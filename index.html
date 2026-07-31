@@ -133,6 +133,46 @@
           <p>독자는 읽기 전에 <strong>화면의 밀도</strong>부터 봅니다. 글자가 빽빽하면 내용과 상관없이 부담을 느끼고 뒤로 갑니다. 내용의 문제가 아니라 배치의 문제입니다.</p>
           <p>기준은 모바일에 맞춰야 합니다. PC에서 네 줄로 보이던 문단이 휴대폰에서는 열 줄을 넘깁니다.</p>
 
+          <div class="density" aria-hidden="true">
+            <figure>
+              <figcaption>정리 전 — 한 덩어리</figcaption>
+              <div class="sheet">
+                <i class="line"></i><i class="line"></i><i class="line"></i><i class="line"></i>
+                <i class="line"></i><i class="line"></i><i class="line"></i><i class="line"></i>
+                <i class="line"></i><i class="line"></i><i class="line"></i><i class="line"></i>
+              </div>
+            </figure>
+            <figure class="after">
+              <figcaption>정리 후 — 숨 쉴 자리</figcaption>
+              <div class="sheet">
+                <i class="line"></i><i class="line"></i><i class="line"></i>
+                <i class="gap"></i>
+                <i class="line"></i><i class="line"></i><i class="line"></i>
+                <i class="gap"></i>
+                <i class="line"></i><i class="line"></i><i class="line"></i>
+              </div>
+            </figure>
+          </div>
+          <p class="small-note">글자 수는 같습니다. 빈 줄만 넣었습니다.</p>
+
+          <div class="gauge" data-widget="sentence">
+            <div class="gauge-head">
+              <strong>문장 길이 실측</strong>
+              <em>휴대폰 화면 기준</em>
+            </div>
+            <div class="gauge-body">
+              <label class="visually-hidden" for="home-sentence">문장 입력</label>
+              <textarea id="home-sentence" data-input placeholder="내 문장을 하나 넣어 보세요. 비워 두면 예시 문장으로 잽니다."></textarea>
+              <div class="gauge-out">
+                <div class="phone">
+                  <div class="phone-notch" aria-hidden="true"></div>
+                  <div class="phone-screen" data-screen></div>
+                </div>
+                <p class="gauge-stat" data-stat></p>
+              </div>
+            </div>
+          </div>
+
           <div class="table-scroll">
             <table class="compare-table">
               <thead><tr><th>항목</th><th>기준</th><th>왜</th></tr></thead>
@@ -471,5 +511,7 @@
       <p class="copyright">© <span data-current-year>2026</span> Subpath Laboratory. All rights reserved.</p>
     </div>
   </footer>
+
+  <script src="assets/widgets.js"></script>
 </body>
 </html>

@@ -79,6 +79,7 @@ const ARTICLES = [
   },
   {
     file: 'guide-title.html',
+    widgets: true,
     group: '글 쓰기',
     title: '제목 짓기',
     lead: '제목은 본문보다 훨씬 많이 읽힙니다. 낚시 없이 클릭을 만드는 제목의 구조를 예문으로 봅니다.',
@@ -111,6 +112,7 @@ const ARTICLES = [
   },
   {
     file: 'guide-readability.html',
+    widgets: true,
     group: '다듬기',
     title: '문장과 문단 길이',
     lead: '문장 60자, 문단 2~3문장. 이 숫자가 어디서 나왔고 언제 깨도 되는지 설명합니다.',
@@ -127,6 +129,7 @@ const ARTICLES = [
   },
   {
     file: 'guide-spelling.html',
+    widgets: true,
     group: '다듬기',
     title: '자주 틀리는 맞춤법',
     lead: '되/돼, 안/않, 왠/웬을 헷갈리지 않는 판별법과, 자주 틀리는 단어 100개 표입니다.',
@@ -183,6 +186,7 @@ const ARTICLES = [
   },
   {
     file: 'guide-checklist.html',
+    widgets: true,
     group: '발행하기',
     title: '발행 전 점검 목록',
     lead: '다 썼다고 바로 올리지 마세요. 5분이 글의 인상을 바꿉니다.',
@@ -242,6 +246,7 @@ const PAGES = [
     title: '블로그 글쓰기 안내서',
     desc: '블로그를 처음 쓰는 사람이 막히는 지점을 순서대로 정리한 안내서. 글쓰기 문서 20편과 무료 도구 3개.',
     ads: true,
+    scripts: ['assets/widgets.js'],
     canonical: `${SITE.url}/`
   },
   {
@@ -256,7 +261,9 @@ const PAGES = [
     title: article.title,
     desc: article.desc,
     ads: true,
-    article: true
+    article: true,
+    // 실측 위젯이 들어가는 문서에만 스크립트를 붙입니다
+    ...(article.widgets ? { scripts: ['assets/widgets.js'] } : {})
   })),
   {
     file: 'about.html',
