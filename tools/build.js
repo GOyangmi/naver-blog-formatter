@@ -20,6 +20,70 @@ const { SITE, NAV, FOOTER_NAV, PAGES, ARTICLES } = require('./pages.js');
 const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, 'src');
 
+/**
+ * 로고. 붉은 여백선이 그어진 노트 한 장 — 실측 노트라는 성격을 그대로 담았습니다.
+ * favicon.svg 와 같은 도형이며, 작은 크기에서도 읽히도록 획을 두껍게 잡았습니다.
+ */
+const BRAND_MARK = `<svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <path d="M6.4 4.4h13.3L25.6 10v17.6H6.4z" fill="var(--card)" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M19.7 4.4V10h5.9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M10.7 4.4v23.2" stroke="var(--red)" stroke-width="2"/>
+          <path d="M13.9 16.4h8.1M13.9 21.2h5.3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>`;
+
+/** 검색엔진이 사이트를 하나의 대상으로 이해하도록 돕는 구조화 데이터 */
+function renderJsonLd(page) {
+  const graph = [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE.url}/#website`,
+      url: `${SITE.url}/`,
+      name: SITE.name,
+      inLanguage: 'ko',
+      description: '블로그를 처음 쓰는 사람을 위한 안내서와 가독성·맞춤법 도구',
+      publisher: { '@id': `${SITE.url}/#org` }
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE.url}/#org`,
+      name: SITE.tagline,
+      alternateName: SITE.name,
+      url: `${SITE.url}/`,
+      logo: `${SITE.url}/favicon.svg`,
+      email: SITE.email
+    }
+  ];
+
+  if (page.article) {
+    const article = ARTICLES.find(a => a.file === page.file);
+    graph.push({
+      '@type': 'Article',
+      '@id': `${canonicalOf(page)}#article`,
+      headline: article.title,
+      description: page.desc,
+      inLanguage: 'ko',
+      datePublished: SITE.updatedAt,
+      dateModified: SITE.updatedAt,
+      articleSection: article.group,
+      author: { '@id': `${SITE.url}/#org` },
+      publisher: { '@id': `${SITE.url}/#org` },
+      isPartOf: { '@id': `${SITE.url}/#website` },
+      mainEntityOfPage: canonicalOf(page)
+    });
+    graph.push({
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: '안내서', item: `${SITE.url}/` },
+        { '@type': 'ListItem', position: 2, name: '주제별 가이드', item: `${SITE.url}/guides.html` },
+        { '@type': 'ListItem', position: 3, name: article.title }
+      ]
+    });
+  }
+
+  const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+  return `\n  <script type="application/ld+json">${json.replace(/</g, '\\u003c')}</script>`;
+}
+
 function escapeAttr(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -49,7 +113,7 @@ function renderArticleList() {
 
   return groups.map(group => {
     const cards = group.items.map(item => `        <a class="guide-card" href="${item.file}">
-          <span class="guide-tag">${escapeAttr(group.name)}</span>
+          <span class="guide-when">${escapeAttr(item.when)}</span>
           <h3>${escapeAttr(item.title)}</h3>
           <p>${escapeAttr(item.lead)}</p>
           <span class="guide-time">읽는 데 약 ${item.minutes}분</span>
@@ -79,6 +143,7 @@ function renderArticleShell(page, body) {
         <p class="eyebrow">${escapeAttr(article.group)}</p>
         <h1>${escapeAttr(article.title)}</h1>
         <p class="article-deck">${escapeAttr(article.lead)}</p>
+        <p class="article-when"><span>이럴 때 읽으세요</span>${escapeAttr(article.when)}</p>
         <p class="article-meta">${SITE.tagline} · ${SITE.updatedAt.replace(/-/g, '. ')} · 읽는 데 약 ${article.minutes}분</p>
       </header>
 
@@ -111,7 +176,7 @@ function renderHeader(page) {
   return `  <header class="site-header">
     <div class="header-inner">
       <a class="brand" href="index.html" aria-label="${escapeAttr(SITE.name)} 홈">
-        <span class="brand-mark" aria-hidden="true">${SITE.mark}</span>
+        ${BRAND_MARK}
         <span><strong>${SITE.name}</strong><small>${SITE.tagline}</small></span>
       </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">메뉴</button>
@@ -169,7 +234,7 @@ function renderPage(page, body) {
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="assets/styles.css" />
-  <title>${title}</title>${robots}${naver}
+  <title>${title}</title>${robots}${naver}${renderJsonLd(page)}
   <script defer src="assets/site.js"></script>${adsScript}
 </head>
 <body>

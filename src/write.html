@@ -1,0 +1,75 @@
+    <section class="tool-intro shell">
+      <p class="eyebrow">WRITING DESK</p>
+      <h1>글 작성</h1>
+      <p>여기서 바로 쓰고 저장할 수 있습니다. 쓰는 동안 글자 수, 가독성 점수, 오탈자 개수가 옆에서 계속 갱신됩니다. 다 쓰면 파일로 내려받아 블로그에 옮기세요.</p>
+      <div class="tool-privacy-badge">글은 이 브라우저에만 저장됩니다</div>
+    </section>
+
+    <section class="writer shell" aria-label="글 작성 작업실">
+      <aside class="writer-docs" aria-label="저장된 글">
+        <div class="writer-docs-head">
+          <strong>내 글</strong>
+          <button class="button secondary" type="button" id="newDoc">새 글</button>
+        </div>
+        <ul class="writer-list" id="docList"></ul>
+        <p class="writer-storage">
+          저장된 글은 <strong>이 브라우저 안에만</strong> 있습니다. 서버로 보내지 않습니다.
+          브라우저 데이터를 지우거나 시크릿 모드를 쓰면 사라지니, 중요한 글은 파일로 내려받아 두세요.
+        </p>
+        <button class="button ghost" type="button" id="clearAll">저장된 글 전부 삭제</button>
+      </aside>
+
+      <div class="writer-main">
+        <label class="visually-hidden" for="docTitle">제목</label>
+        <input type="text" id="docTitle" class="writer-title" placeholder="제목을 입력하세요" autocomplete="off" />
+        <p class="writer-titlemeter" id="titleMeter"></p>
+
+        <label class="visually-hidden" for="docBody">본문</label>
+        <textarea id="docBody" class="writer-body" spellcheck="false" placeholder="여기에 글을 쓰세요.&#10;&#10;쓰는 동안 오른쪽에서 가독성 점수와 오탈자를 계속 확인할 수 있습니다.&#10;입력한 내용은 이 브라우저 밖으로 나가지 않습니다."></textarea>
+
+        <p class="writer-stat" id="statBar"></p>
+
+        <div class="writer-actions">
+          <button class="button primary" type="button" id="saveDoc">저장</button>
+          <button class="button secondary" type="button" id="formatDoc">문단 정리</button>
+          <button class="button secondary" type="button" id="exportTxt">TXT 내려받기</button>
+          <button class="button secondary" type="button" id="exportMd">MD 내려받기</button>
+          <label class="button secondary" for="importFile">파일 불러오기</label>
+          <input type="file" id="importFile" accept=".txt,.md,.markdown,text/plain" hidden />
+          <button class="button ghost" type="button" id="deleteDoc">이 글 삭제</button>
+        </div>
+        <p class="writer-status" id="writeStatus" role="status" aria-live="polite"></p>
+      </div>
+
+      <aside class="writer-panel" aria-label="실시간 진단">
+        <div class="panel-block">
+          <div class="panel-head"><strong>가독성</strong><span id="scoreGrade"></span></div>
+          <div id="scorePanel" class="panel-body"></div>
+        </div>
+        <div class="panel-block">
+          <div class="panel-head"><strong>표기 점검</strong><span id="proofCount"></span></div>
+          <div id="proofPanel" class="panel-body"></div>
+        </div>
+      </aside>
+
+      <noscript><p class="verification bad">이 기능을 쓰려면 브라우저에서 JavaScript를 활성화해야 합니다.</p></noscript>
+    </section>
+
+    <section class="section shell tool-help">
+      <h2>알아 두실 것</h2>
+      <div class="card-grid three">
+        <article class="feature-card">
+          <h3>저장 위치</h3>
+          <p>글은 브라우저의 로컬 저장소에만 들어갑니다. 서버로 보내지 않고 운영자도 볼 수 없습니다. 대신 다른 기기에서는 보이지 않고, 브라우저 데이터를 지우면 함께 사라집니다.</p>
+        </article>
+        <article class="feature-card">
+          <h3>자동 저장</h3>
+          <p>입력을 멈추면 잠시 뒤 자동으로 저장됩니다. 그래도 긴 글은 중간중간 파일로 내려받아 두세요. 브라우저 저장소는 백업이 아닙니다.</p>
+        </article>
+        <article class="feature-card">
+          <h3>진단 기준</h3>
+          <p>오른쪽 점수는 <a href="readability.html">가독성 진단</a>, 표기 점검은 <a href="proofread.html">오탈자 점검</a>과 같은 규칙을 씁니다. 자세한 결과가 필요하면 해당 도구에서 보세요.</p>
+        </article>
+      </div>
+      <p class="small-note">쓰기 전에 <a href="guide-structure.html">글의 구조 잡기</a>로 뼈대를 정하고, 다 쓴 뒤에는 <a href="guide-checklist.html">발행 전 점검 목록</a>을 훑어 보세요.</p>
+    </section>

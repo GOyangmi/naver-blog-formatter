@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko" data-adsense-eligible="true">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="google-adsense-account" content="ca-pub-5607762816055463" />
+  <meta name="description" content="브라우저에서 바로 글을 쓰고 저장합니다. 가독성 점수와 오탈자를 쓰는 동안 확인하세요." />
+  <meta name="theme-color" content="#0b7a46" />
+  <meta property="og:type" content="article" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:site_name" content="블로거를 위한 안내서" />
+  <meta property="og:title" content="글 작성 | 블로거를 위한 안내서" />
+  <meta property="og:description" content="브라우저에서 바로 글을 쓰고 저장합니다. 가독성 점수와 오탈자를 쓰는 동안 확인하세요." />
+  <meta property="og:url" content="https://subpathlaboratory.com/write.html" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://subpathlaboratory.com/write.html" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <title>글 작성 | 블로거를 위한 안내서</title>
+  <meta name="naver-site-verification" content="f95cd8cff8f9c1d1b2e30820de944524888a32e8" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://subpathlaboratory.com/#website","url":"https://subpathlaboratory.com/","name":"블로거를 위한 안내서","inLanguage":"ko","description":"블로그를 처음 쓰는 사람을 위한 안내서와 가독성·맞춤법 도구","publisher":{"@id":"https://subpathlaboratory.com/#org"}},{"@type":"Organization","@id":"https://subpathlaboratory.com/#org","name":"Subpath Laboratory","alternateName":"블로거를 위한 안내서","url":"https://subpathlaboratory.com/","logo":"https://subpathlaboratory.com/favicon.svg","email":"goyangmi929@syuin.ac.kr"}]}</script>
+  <script defer src="assets/site.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5607762816055463" crossorigin="anonymous"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="블로거를 위한 안내서 홈">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <path d="M6.4 4.4h13.3L25.6 10v17.6H6.4z" fill="var(--card)" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M19.7 4.4V10h5.9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M10.7 4.4v23.2" stroke="var(--red)" stroke-width="2"/>
+          <path d="M13.9 16.4h8.1M13.9 21.2h5.3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+        <span><strong>블로거를 위한 안내서</strong><small>Subpath Laboratory</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">메뉴</button>
+      <nav class="site-nav" id="site-nav" aria-label="주요 메뉴"><a href="index.html">안내서</a><a href="guides.html">주제별 가이드</a><a href="write.html" aria-current="page">글 작성</a><a href="readability.html">가독성 진단</a><a href="proofread.html">오탈자 점검</a><a href="formatter.html">문단 정리</a></nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="tool-intro shell">
+      <p class="eyebrow">WRITING DESK</p>
+      <h1>글 작성</h1>
+      <p>여기서 바로 쓰고 저장할 수 있습니다. 쓰는 동안 글자 수, 가독성 점수, 오탈자 개수가 옆에서 계속 갱신됩니다. 다 쓰면 파일로 내려받아 블로그에 옮기세요.</p>
+      <div class="tool-privacy-badge">글은 이 브라우저에만 저장됩니다</div>
+    </section>
+
+    <section class="writer shell" aria-label="글 작성 작업실">
+      <aside class="writer-docs" aria-label="저장된 글">
+        <div class="writer-docs-head">
+          <strong>내 글</strong>
+          <button class="button secondary" type="button" id="newDoc">새 글</button>
+        </div>
+        <ul class="writer-list" id="docList"></ul>
+        <p class="writer-storage">
+          저장된 글은 <strong>이 브라우저 안에만</strong> 있습니다. 서버로 보내지 않습니다.
+          브라우저 데이터를 지우거나 시크릿 모드를 쓰면 사라지니, 중요한 글은 파일로 내려받아 두세요.
+        </p>
+        <button class="button ghost" type="button" id="clearAll">저장된 글 전부 삭제</button>
+      </aside>
+
+      <div class="writer-main">
+        <label class="visually-hidden" for="docTitle">제목</label>
+        <input type="text" id="docTitle" class="writer-title" placeholder="제목을 입력하세요" autocomplete="off" />
+        <p class="writer-titlemeter" id="titleMeter"></p>
+
+        <label class="visually-hidden" for="docBody">본문</label>
+        <textarea id="docBody" class="writer-body" spellcheck="false" placeholder="여기에 글을 쓰세요.&#10;&#10;쓰는 동안 오른쪽에서 가독성 점수와 오탈자를 계속 확인할 수 있습니다.&#10;입력한 내용은 이 브라우저 밖으로 나가지 않습니다."></textarea>
+
+        <p class="writer-stat" id="statBar"></p>
+
+        <div class="writer-actions">
+          <button class="button primary" type="button" id="saveDoc">저장</button>
+          <button class="button secondary" type="button" id="formatDoc">문단 정리</button>
+          <button class="button secondary" type="button" id="exportTxt">TXT 내려받기</button>
+          <button class="button secondary" type="button" id="exportMd">MD 내려받기</button>
+          <label class="button secondary" for="importFile">파일 불러오기</label>
+          <input type="file" id="importFile" accept=".txt,.md,.markdown,text/plain" hidden />
+          <button class="button ghost" type="button" id="deleteDoc">이 글 삭제</button>
+        </div>
+        <p class="writer-status" id="writeStatus" role="status" aria-live="polite"></p>
+      </div>
+
+      <aside class="writer-panel" aria-label="실시간 진단">
+        <div class="panel-block">
+          <div class="panel-head"><strong>가독성</strong><span id="scoreGrade"></span></div>
+          <div id="scorePanel" class="panel-body"></div>
+        </div>
+        <div class="panel-block">
+          <div class="panel-head"><strong>표기 점검</strong><span id="proofCount"></span></div>
+          <div id="proofPanel" class="panel-body"></div>
+        </div>
+      </aside>
+
+      <noscript><p class="verification bad">이 기능을 쓰려면 브라우저에서 JavaScript를 활성화해야 합니다.</p></noscript>
+    </section>
+
+    <section class="section shell tool-help">
+      <h2>알아 두실 것</h2>
+      <div class="card-grid three">
+        <article class="feature-card">
+          <h3>저장 위치</h3>
+          <p>글은 브라우저의 로컬 저장소에만 들어갑니다. 서버로 보내지 않고 운영자도 볼 수 없습니다. 대신 다른 기기에서는 보이지 않고, 브라우저 데이터를 지우면 함께 사라집니다.</p>
+        </article>
+        <article class="feature-card">
+          <h3>자동 저장</h3>
+          <p>입력을 멈추면 잠시 뒤 자동으로 저장됩니다. 그래도 긴 글은 중간중간 파일로 내려받아 두세요. 브라우저 저장소는 백업이 아닙니다.</p>
+        </article>
+        <article class="feature-card">
+          <h3>진단 기준</h3>
+          <p>오른쪽 점수는 <a href="readability.html">가독성 진단</a>, 표기 점검은 <a href="proofread.html">오탈자 점검</a>과 같은 규칙을 씁니다. 자세한 결과가 필요하면 해당 도구에서 보세요.</p>
+        </article>
+      </div>
+      <p class="small-note">쓰기 전에 <a href="guide-structure.html">글의 구조 잡기</a>로 뼈대를 정하고, 다 쓴 뒤에는 <a href="guide-checklist.html">발행 전 점검 목록</a>을 훑어 보세요.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>블로거를 위한 안내서</strong>
+        <p>입력한 글을 서버로 보내지 않고 브라우저 안에서만 처리합니다.</p>
+      </div>
+      <nav aria-label="하단 메뉴">
+        <a href="about.html">소개</a>
+        <a href="privacy.html">개인정보 처리방침</a>
+        <a href="terms.html">이용약관</a>
+        <a href="contact.html">문의</a>
+      </nav>
+      <p class="copyright">© <span data-current-year>2026</span> Subpath Laboratory. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="assets/readability-core.js"></script>
+  <script src="assets/proofread-core.js"></script>
+  <script src="assets/formatter-core.js"></script>
+  <script src="assets/write.js"></script>
+</body>
+</html>

@@ -1,4 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="18" fill="#0b7a46"/>
-  <path d="M18 18h28v6H18zm0 11h23v6H18zm0 11h28v6H18z" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="블로거를 위한 안내서">
+  <rect width="32" height="32" rx="4" fill="#faf7ef"/>
+  <path d="M6.4 4.4h13.3L25.6 10v17.6H6.4z" fill="#fffdf7" stroke="#23211b" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M19.7 4.4V10h5.9" fill="none" stroke="#23211b" stroke-width="2.6" stroke-linejoin="round"/>
+  <path d="M10.7 4.4v23.2" stroke="#a8442d" stroke-width="2"/>
+  <path d="M13.9 16.4h8.1M13.9 21.2h5.3" stroke="#23211b" stroke-width="2.4" stroke-linecap="round"/>
 </svg>
