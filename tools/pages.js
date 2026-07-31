@@ -19,12 +19,10 @@ const SITE = {
   /**
    * 사이트 주소. canonical, og:url, sitemap.xml, robots.txt에 쓰입니다.
    *
-   * 커스텀 도메인(subpathlaboratory.com)으로 옮길 때 할 일은 두 가지입니다.
-   *   1) 아래 url을 'https://subpathlaboratory.com' 으로 바꾸고
-   *   2) CNAME 파일에 subpathlaboratory.com 한 줄을 넣은 뒤 node tools/build.js 실행
-   * Cloudflare DNS 설정은 DNS-SETUP.txt를 참고하세요.
+   * 도메인을 바꾸려면 이 값과 루트의 CNAME 파일을 함께 고친 뒤
+   * node tools/build.js 를 실행하세요. DNS 설정은 DNS-SETUP.txt에 있습니다.
    */
-  url: 'https://goyangmi.github.io/naver-blog-formatter',
+  url: 'https://subpathlaboratory.com',
 
   adsenseClient: 'ca-pub-5607762816055463',
   themeColor: '#0b7a46',
