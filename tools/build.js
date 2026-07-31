@@ -15,7 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { SITE, NAV, FOOTER_NAV, PAGES } = require('./pages.js');
+const { SITE, NAV, FOOTER_NAV, PAGES, ARTICLES } = require('./pages.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, 'src');
@@ -36,6 +36,70 @@ function fullTitle(page) {
 
 function canonicalOf(page) {
   return page.canonical || `${SITE.url}/${page.file}`;
+}
+
+/** 문서 목록 카드. {{ARTICLE_LIST}} 자리에 들어갑니다. */
+function renderArticleList() {
+  const groups = [];
+  for (const article of ARTICLES) {
+    let group = groups.find(g => g.name === article.group);
+    if (!group) groups.push((group = { name: article.group, items: [] }));
+    group.items.push(article);
+  }
+
+  return groups.map(group => {
+    const cards = group.items.map(item => `        <a class="guide-card" href="${item.file}">
+          <span class="guide-tag">${escapeAttr(group.name)}</span>
+          <h3>${escapeAttr(item.title)}</h3>
+          <p>${escapeAttr(item.lead)}</p>
+          <span class="guide-time">읽는 데 약 ${item.minutes}분</span>
+        </a>`).join('\n');
+
+    return `      <h2 class="group-title">${escapeAttr(group.name)}</h2>
+      <div class="guide-grid">
+${cards}
+      </div>`;
+  }).join('\n\n');
+}
+
+/** 문서 페이지의 제목 영역과 이전·다음 이동 */
+function renderArticleShell(page, body) {
+  const index = ARTICLES.findIndex(a => a.file === page.file);
+  const article = ARTICLES[index];
+  const prev = ARTICLES[index - 1];
+  const next = ARTICLES[index + 1];
+
+  const nav = [
+    prev ? `<a href="${prev.file}">← ${escapeAttr(prev.title)}</a>` : '<span></span>',
+    next ? `<a href="${next.file}">${escapeAttr(next.title)} →</a>` : '<span></span>'
+  ].join('\n        ');
+
+  return `    <article class="article shell">
+      <header class="article-header">
+        <p class="eyebrow">${escapeAttr(article.group)}</p>
+        <h1>${escapeAttr(article.title)}</h1>
+        <p class="article-deck">${escapeAttr(article.lead)}</p>
+        <p class="article-meta">${SITE.tagline} · ${SITE.updatedAt.replace(/-/g, '. ')} · 읽는 데 약 ${article.minutes}분</p>
+      </header>
+
+      <div class="prose article-prose standalone">
+${body.trimEnd()}
+
+        <div class="article-nav">
+        ${nav}
+        </div>
+
+        <aside class="article-cta">
+          <strong>글을 다 썼다면</strong>
+          <p>가독성 진단으로 점수를 재고, 오탈자 점검으로 표기를 훑어 보세요. 붙여 넣은 글은 브라우저 밖으로 나가지 않습니다.</p>
+          <p>
+            <a class="button primary" href="readability.html">가독성 진단</a>
+            <a class="button secondary" href="proofread.html">오탈자 점검</a>
+            <a class="button secondary" href="guides.html">문서 전체 목록</a>
+          </p>
+        </aside>
+      </div>
+    </article>`;
 }
 
 function renderHeader(page) {
@@ -161,7 +225,9 @@ function main() {
       missing.push(page.file);
       continue;
     }
-    const body = fs.readFileSync(srcPath, 'utf8');
+    let body = fs.readFileSync(srcPath, 'utf8');
+    if (page.article) body = renderArticleShell(page, body);
+    body = body.replace('{{ARTICLE_LIST}}', renderArticleList);
     fs.writeFileSync(path.join(ROOT, page.file), renderPage(page, body), 'utf8');
     written.push(page.file);
   }
