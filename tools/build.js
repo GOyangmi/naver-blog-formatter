@@ -203,7 +203,12 @@ ${entries}
 }
 
 function buildRobots() {
-  return `User-agent: *
+  // Yeti는 네이버 검색로봇입니다. 전체 허용이라 * 규칙으로 충분하지만,
+  // 서치어드바이저 진단에서 명시적으로 확인되도록 따로 적어 둡니다.
+  return `User-agent: Yeti
+Allow: /
+
+User-agent: *
 Allow: /
 
 Sitemap: ${SITE.url}/sitemap.xml
