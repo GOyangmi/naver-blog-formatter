@@ -1,73 +1,76 @@
-# 원문결 문단 정리기
+# 블로거를 위한 안내서
 
-원문의 단어와 문장부호를 바꾸지 않고 공백과 줄바꿈만 정리하는 정적 웹사이트입니다. 입력 데이터는 서버로 전송되지 않습니다.
+블로그를 처음 쓰는 사람을 위한 안내서와, 그 내용을 실제로 확인할 수 있는 도구 세 가지를 모은 정적 사이트입니다.
+서버가 없고 런타임 의존성도 없습니다. 브라우저에서 바로 돌아갑니다.
 
-## 현재 사전 설정
+현재 주소: <https://goyangmi.github.io/naver-blog-formatter/>
 
-- GitHub 계정: `GOyangmi`
-- 저장소 이름: `naver-blog-formatter`
-- 사용자 도메인: `subpathlaboratory.com`
-- Google AdSense: `ca-pub-5607762816055463`
-- 공개 방식: GitHub Pages `main / (root)`
+## 구성
 
-## 가장 빠른 배포
+| 페이지 | 내용 | 광고 |
+|---|---|---|
+| `index.html` | 블로그 시작 안내서 (12개 절, 단독 스크롤 페이지) | O |
+| `readability.html` | 가독성 진단 — 100점 만점 점수와 개선 지점 | O |
+| `proofread.html` | 오탈자·맞춤법 점검 — 200개 이상 규칙 | O |
+| `formatter.html` | 문단 정리 — 원문 보존 검증 포함 | O |
+| `about` `privacy` `terms` `contact` `404` | 소개·정책 페이지 | X |
 
-Windows에서 압축을 푼 폴더의 `DEPLOY-NOW.cmd`를 더블클릭합니다.
+## 원칙
 
-최초 실행 시 브라우저가 열리면 `GOyangmi` GitHub 계정 로그인을 승인하세요. 그 뒤 스크립트가 다음을 자동 처리합니다.
+- **입력한 글을 서버로 보내지 않습니다.** 코드에 `fetch`, `XMLHttpRequest`, `sendBeacon`, `form action`이 하나도 없습니다.
+- **글을 대신 고치지 않습니다.** 문제로 보이는 곳을 근거와 함께 보여 주고, 반영 여부는 사용자가 고릅니다.
+- **문단 정리기는 원문을 검증합니다.** 공백류를 제외한 모든 문자를 처리 전후로 대조해, 하나라도 다르면 사용을 막습니다.
 
-1. Git 및 GitHub CLI 설치 확인
-2. GitHub 브라우저 로그인
-3. `GOyangmi/naver-blog-formatter` 공개 저장소 생성 또는 업데이트
-4. 전체 파일 업로드
-5. GitHub Pages 활성화
-6. `subpathlaboratory.com` 사용자 도메인 요청
-7. AdSense 게시자 ID, 계정 메타 태그, `ads.txt` 반영
-8. `sitemap.xml`, `robots.txt`, `CNAME`, DNS 안내 파일 생성
+## 개발
 
-로그인 계정이나 설정값을 바꾸려면 `DEPLOY.cmd`를 실행합니다.
-
-## 배포 후 필요한 계정 화면 작업
-
-코드로 대신할 수 없는 두 단계가 남습니다.
-
-1. 도메인 관리 화면에서 `DNS-SETUP.txt`의 A 레코드와 `www` CNAME을 등록합니다. Google Workspace의 MX/TXT 레코드는 삭제하지 마세요.
-2. AdSense의 **Sites**에서 `subpathlaboratory.com`을 추가하고 검토를 요청한 뒤, **Ads**에서 Auto ads를 켭니다.
-
-## 광고 배치 원칙
-
-AdSense 광고 스크립트는 고정된 자체 콘텐츠가 있는 다음 페이지에서만 로드됩니다.
-
-- `index.html`
-- `guide.html`
-- `preservation.html`
-
-사용자가 임의의 원문을 붙이는 `formatter.html`과 개인정보 처리방침·약관·문의 페이지에는 광고 스크립트가 로드되지 않습니다.
-
-## 파일 구조
-
-- `index.html`: 소개와 사용 안내
-- `formatter.html`: 광고 없는 문단 정리 도구
-- `guide.html`: 네이버 블로그 가독성 가이드
-- `preservation.html`: 원문 보존 검증 방식
-- `privacy.html`, `terms.html`, `contact.html`: 운영 정책 페이지
-- `assets/config.js`: 도메인과 AdSense 설정
-- `configure-site.ps1`: 설정 파일 자동 생성
-- `deploy-github-pages.ps1`: GitHub 저장소와 Pages 자동 배포
-- `DEPLOY-NOW.cmd`: 사전 설정값으로 즉시 배포
-- `DNS-SETUP.txt`: 등록할 DNS 값
-
-## 로컬 테스트
-
-```powershell
-python -m http.server 8080
+```bash
+node tools/build.js       # src/ 본문 + tools/pages.js 메타 → 루트 HTML 생성
+node test-formatter.js    # 문단 정리 엔진 테스트
+node test-proofread.js    # 오탈자 엔진 테스트
+node test-readability.js  # 가독성 엔진 테스트
+python3 -m http.server 8899   # 로컬 확인
 ```
 
-기능 테스트:
+### 페이지 구조
 
-```powershell
-node test-formatter.js
-```
+루트의 `*.html`은 **생성물입니다. 직접 고치지 마세요.**
+
+- 본문을 고치려면 `src/<이름>.html` (본문 조각만 들어 있음)
+- 제목·설명·광고 여부·메뉴를 고치려면 `tools/pages.js`
+- 고친 뒤 `node tools/build.js`
+
+`sitemap.xml`, `robots.txt`, `ads.txt`, `assets/config.js`도 빌드 때 함께 생성됩니다.
+
+### 엔진
+
+| 파일 | 역할 |
+|---|---|
+| `assets/readability-core.js` | 가독성 분석 (문장·문단 길이, 번역투, 어미 반복, 강조) |
+| `assets/proofread-core.js` | 맞춤법·띄어쓰기·외래어·문장부호 규칙 |
+| `assets/formatter-core.js` | 문단 나눔과 줄바꿈, 원문 보존 검증 |
+
+엔진은 브라우저와 Node 양쪽에서 동작하며, UI 없이 단독으로 테스트할 수 있습니다.
+
+오탈자 규칙을 추가하려면 `assets/proofread-core.js`의 `SPELLING_ERRORS`, `LOANWORDS` 배열에
+`['틀린 표기', '맞는 표기', '왜 그런지 설명']` 한 줄을 넣으면 됩니다.
+한국어 활용형은 어미의 첫 자음이 앞 글자에 붙는 경우가 많으니(`되어지` + `ㅂ니다` → `되어집니다`),
+합쳐진 형태를 별도 항목으로 넣고 **긴 것을 먼저** 두세요.
+
+## 배포
+
+GitHub Pages(`main` 브랜치 루트)로 서비스합니다. `main`에 푸시하면 자동으로 다시 빌드됩니다.
+
+### 커스텀 도메인으로 옮기기
+
+1. Cloudflare DNS에 `DNS-SETUP.txt`의 A 레코드 4개와 `www` CNAME 등록 (프록시는 **DNS only / 회색 구름**)
+2. `tools/pages.js`의 `SITE.url`을 `https://subpathlaboratory.com`으로 변경
+3. 루트에 `CNAME` 파일을 만들고 `subpathlaboratory.com` 한 줄 입력
+4. `node tools/build.js` 실행 후 커밋·푸시
+5. 저장소 Settings → Pages에서 커스텀 도메인과 HTTPS 적용 확인
+
+## 광고
+
+Google AdSense Auto ads (`ca-pub-5607762816055463`). 남은 계정 작업은 `ADSENSE-CHECKLIST.md`를 참고하세요.
 
 ## 운영자
 

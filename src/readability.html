@@ -1,0 +1,46 @@
+    <section class="tool-intro shell">
+      <p class="eyebrow">READABILITY CHECK</p>
+      <h1>블로그 가독성 진단</h1>
+      <p>초고를 붙여 넣으면 문장 길이, 문단 길이, 번역투, 강조 사용을 재서 100점 만점으로 점수를 냅니다. 글을 고치지는 않습니다. 어디를 고쳐야 하는지만 알려 줍니다.</p>
+      <div class="tool-privacy-badge">입력한 글은 서버로 전송되지 않습니다</div>
+    </section>
+
+    <section class="tool-shell shell" aria-label="가독성 진단 도구">
+      <div class="tool-controls">
+        <div class="tool-actions">
+          <button class="button primary" type="button" id="runBtn">가독성 진단</button>
+          <button class="button secondary" type="button" id="sampleBtn">예시로 해보기</button>
+          <button class="button ghost" type="button" id="clearBtn">비우기</button>
+        </div>
+      </div>
+
+      <div class="editor-pane">
+        <div class="editor-title"><label for="input">글 전체를 붙여 넣으세요</label><span id="inputCount">0자</span></div>
+        <textarea id="input" spellcheck="false" autocomplete="off" placeholder="네이버 블로그에 올릴 글을 여기에 붙여 넣으세요. 제목은 빼고 본문만 넣으면 더 정확합니다."></textarea>
+      </div>
+
+      <p id="reportPlaceholder" class="verification">글을 붙여 넣고 “가독성 진단”을 누르면 점수와 개선 지점이 나타납니다.</p>
+      <div id="report" class="tool-report" hidden></div>
+
+      <noscript><p class="verification bad">이 도구를 사용하려면 브라우저에서 JavaScript를 활성화해야 합니다.</p></noscript>
+    </section>
+
+    <section class="section shell tool-help">
+      <h2>점수는 이렇게 계산합니다</h2>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr><th>항목</th><th>배점</th><th>만점 기준</th><th>왜 보는가</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>문장 길이</td><td>25점</td><td>60자 초과 문장이 전체의 10% 이하</td><td>모바일에서 세 줄을 넘는 문장은 눈이 자리를 잃습니다.</td></tr>
+            <tr><td>문단 길이</td><td>25점</td><td>4문장·250자를 넘는 문단이 10% 이하</td><td>덩어리진 문단은 읽기 전에 부담을 만듭니다.</td></tr>
+            <tr><td>번역투·군더더기</td><td>15점</td><td>10문장당 3회 이하</td><td>"~에 대한", 이중 피동은 문장을 늘어뜨립니다.</td></tr>
+            <tr><td>문장 종결 다양성</td><td>15점</td><td>같은 어미가 3문장 이하로 연속</td><td>"~습니다"만 이어지면 낭독하듯 단조로워집니다.</td></tr>
+            <tr><td>화면 밀도</td><td>10점</td><td>문단당 220자 이하</td><td>빈 줄이 있어야 시선이 쉴 자리가 생깁니다.</td></tr>
+            <tr><td>강조 부호 절제</td><td>10점</td><td>문장당 느낌표·이모지 0.5개 이하</td><td>강조가 잦으면 강조가 되지 않습니다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small-note">점수는 기계적인 지표일 뿐 글의 가치를 재는 기준이 아닙니다. 시나 대본처럼 리듬 자체가 의도된 글은 낮은 점수가 나올 수 있고, 그게 정상입니다. 기준의 근거는 <a href="index.html#readability">안내서의 가독성 기준</a>에 자세히 적어 뒀습니다.</p>
+    </section>

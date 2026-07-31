@@ -1,0 +1,61 @@
+    <section class="tool-intro shell">
+      <p class="eyebrow">PROOFREADING</p>
+      <h1>오탈자·맞춤법 점검</h1>
+      <p>블로그 글에서 자주 틀리는 맞춤법, 띄어쓰기, 외래어 표기, 문장부호를 규칙 <span id="ruleCount">200</span>여 개로 훑습니다. 자동으로 고치지 않습니다. 어디가 왜 걸렸는지 보여 주고, 반영할 항목은 직접 고릅니다.</p>
+      <div class="tool-privacy-badge">입력한 글은 서버로 전송되지 않습니다</div>
+    </section>
+
+    <section class="tool-shell shell" aria-label="오탈자 점검 도구">
+      <div class="tool-controls">
+        <div class="tool-actions">
+          <button class="button primary" type="button" id="runBtn">오탈자 검사</button>
+          <button class="button secondary" type="button" id="sampleBtn">예시로 해보기</button>
+          <button class="button ghost" type="button" id="clearBtn">비우기</button>
+        </div>
+      </div>
+
+      <div class="editor-grid">
+        <section class="editor-pane">
+          <div class="editor-title"><label for="input">① 원문 붙여넣기</label><span id="inputCount">0자</span></div>
+          <textarea id="input" spellcheck="false" autocomplete="off" placeholder="검사할 글을 여기에 붙여 넣으세요."></textarea>
+        </section>
+        <section class="editor-pane" id="outputPane" hidden>
+          <div class="editor-title"><label for="output">② 고친 결과</label></div>
+          <textarea id="output" readonly placeholder="고칠 항목을 고르고 “선택한 곳 고치기”를 누르면 결과가 나타납니다."></textarea>
+          <div class="select-actions">
+            <button class="button secondary" type="button" id="copyBtn">결과 복사</button>
+          </div>
+        </section>
+      </div>
+
+      <div id="summary" class="verification" role="status" aria-live="polite"></div>
+
+      <div class="select-actions">
+        <button class="button primary" type="button" id="applyBtn" disabled>선택한 곳 고치기</button>
+        <button class="button secondary" type="button" id="selectAllBtn">전부 선택</button>
+        <button class="button secondary" type="button" id="selectErrorBtn">‘오류’만 선택</button>
+      </div>
+
+      <ul id="findingList" class="finding-list" hidden></ul>
+
+      <noscript><p class="verification bad">이 도구를 사용하려면 브라우저에서 JavaScript를 활성화해야 합니다.</p></noscript>
+    </section>
+
+    <section class="section shell tool-help">
+      <h2>표시 등급을 이렇게 나눴습니다</h2>
+      <div class="card-grid three">
+        <article class="feature-card">
+          <h3>오류</h3>
+          <p>문맥과 상관없이 거의 항상 틀린 표기입니다. “됬”, “몇일”, “컨텐츠”처럼 표준 표기가 하나로 정해져 있는 경우로, 기본으로 선택돼 있습니다.</p>
+        </article>
+        <article class="feature-card">
+          <h3>확인</h3>
+          <p>대부분 틀리지만 문맥에 따라 원래 표기가 맞을 수 있습니다. “바램”은 희망이면 틀리고 색이 옅어진다는 뜻이면 맞습니다. 뜻을 확인하고 고르세요.</p>
+        </article>
+        <article class="feature-card">
+          <h3>다듬기</h3>
+          <p>틀린 건 아니지만 정돈하면 나아지는 것들입니다. 이어진 공백, 느낌표 반복, 같은 단어 반복이 여기 들어가며 기본으로는 선택돼 있지 않습니다.</p>
+        </article>
+      </div>
+      <p class="small-note">규칙 기반이라 사전에 없는 오타나 문맥이 필요한 오류는 잡지 못합니다. 이 도구를 거친 뒤에도 소리 내어 한 번 읽어 보는 과정을 대신할 수는 없습니다. 헷갈리는 표기는 <a href="index.html#spelling">안내서의 맞춤법 정리</a>에서 이유와 함께 확인하세요.</p>
+    </section>

@@ -1,7 +1,7 @@
 window.SUBPATH_SITE_CONFIG = Object.freeze({
-  siteName: "원문결 문단 정리기",
-  siteUrl: "https://subpathlaboratory.com",
+  siteName: "블로거를 위한 안내서",
+  siteUrl: "https://goyangmi.github.io/naver-blog-formatter",
   adsenseEnabled: true,
   adsenseClient: "ca-pub-5607762816055463",
-  updatedAt: "2026-07-30"
+  updatedAt: "2026-07-31"
 });

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://subpathlaboratory.com/sitemap.xml
+Sitemap: https://goyangmi.github.io/naver-blog-formatter/sitemap.xml
