@@ -28,7 +28,7 @@ const SITE = {
    * <meta name="naver-site-verification" content="여기값"> 를 줍니다.
    * 그 content 값만 아래에 붙여 넣고 node tools/build.js 를 실행하면 전 페이지에 들어갑니다.
    */
-  naverVerification: ''
+  naverVerification: 'f95cd8cff8f9c1d1b2e30820de944524888a32e8'
 };
 
 /** 상단 주요 메뉴 */
