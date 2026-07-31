@@ -345,8 +345,8 @@ const TOOL_PAGES = [
 const PAGES = [
   {
     file: 'index.html',
-    title: '블로그 글쓰기 안내서',
-    desc: '블로그를 처음 쓰는 사람이 막히는 지점을 순서대로 정리한 안내서. 글쓰기 문서 20편과 무료 도구 3개.',
+    title: '블로거를 위한 안내서',
+    desc: '블로그 글쓰기부터 홍보와 수익화까지, 막히는 지점을 순서대로 정리했습니다. 가이드 29편과 무료 도구 4개.',
     ads: true,
     scripts: ['assets/widgets.js'],
     canonical: `${SITE.url}/`

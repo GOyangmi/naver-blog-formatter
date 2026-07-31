@@ -93,8 +93,9 @@ function escapeAttr(value) {
 }
 
 function fullTitle(page) {
-  return page.file === 'index.html'
-    ? `${page.title} | ${SITE.name}`
+  // 첫 페이지 제목이 사이트 이름과 같으면 되풀이하지 않고 설명을 붙입니다.
+  return page.title === SITE.name
+    ? `${page.title} — 블로그 글쓰기·홍보·수익화 가이드`
     : `${page.title} | ${SITE.name}`;
 }
 
