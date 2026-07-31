@@ -81,6 +81,9 @@ function renderPage(page, body) {
     ? `\n  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsenseClient}" crossorigin="anonymous"></script>`
     : '';
   const robots = page.noindex ? '\n  <meta name="robots" content="noindex" />' : '';
+  const naver = SITE.naverVerification
+    ? `\n  <meta name="naver-site-verification" content="${escapeAttr(SITE.naverVerification)}" />`
+    : '';
   const title = fullTitle(page);
 
   return `<!doctype html>
@@ -102,7 +105,7 @@ function renderPage(page, body) {
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="assets/styles.css" />
-  <title>${title}</title>${robots}
+  <title>${title}</title>${robots}${naver}
   <script defer src="assets/site.js"></script>${adsScript}
 </head>
 <body>

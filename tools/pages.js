@@ -27,7 +27,15 @@ const SITE = {
   adsenseClient: 'ca-pub-5607762816055463',
   themeColor: '#0b7a46',
   email: 'goyangmi929@syuin.ac.kr',
-  updatedAt: '2026-07-31'
+  updatedAt: '2026-07-31',
+
+  /**
+   * 네이버 서치어드바이저 사이트 소유확인 코드.
+   * searchadvisor.naver.com → 웹마스터 도구 → 사이트 등록 → HTML 태그 방식을 고르면
+   * <meta name="naver-site-verification" content="여기값"> 를 줍니다.
+   * 그 content 값만 아래에 붙여 넣고 node tools/build.js 를 실행하면 전 페이지에 들어갑니다.
+   */
+  naverVerification: ''
 };
 
 /** 상단 주요 메뉴 — 안내서는 홈이고, 도구만 따로 페이지로 나갑니다. */
