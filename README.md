@@ -3,7 +3,7 @@
 블로그를 처음 쓰는 사람을 위한 안내서와, 그 내용을 실제로 확인할 수 있는 도구 세 가지를 모은 정적 사이트입니다.
 서버가 없고 런타임 의존성도 없습니다. 브라우저에서 바로 돌아갑니다.
 
-현재 주소: <https://goyangmi.github.io/naver-blog-formatter/>
+주소: <https://subpathlaboratory.com>
 
 ## 구성
 

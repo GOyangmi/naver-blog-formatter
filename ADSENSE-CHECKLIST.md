@@ -34,20 +34,16 @@
 
 ## AdSense 계정에서 남은 작업
 
-1. **Sites**에서 사이트를 추가합니다.
-   - 커스텀 도메인 연결 전이라면 `goyangmi.github.io` (하위 경로는 입력할 수 없습니다)
-   - 커스텀 도메인 연결 후에는 `subpathlaboratory.com`
-2. 연결 방식에서 AdSense 코드 또는 메타 태그가 감지되는지 확인합니다.
-3. 사이트 검토를 요청합니다.
-4. 승인 후 **Ads**에서 사이트별 Auto ads를 켭니다.
-5. **Privacy & messaging**에서 필요한 지역의 Google 인증 CMP 메시지를 설정합니다.
-6. `ads.txt`가 열리는지 확인합니다.
+| 단계 | 상태 |
+|---|---|
+| **Sites**에 `subpathlaboratory.com` 추가 | 완료 (2026-07-31) |
+| 사이트 소유권 확인 | 완료 — 코드 스니펫·메타 태그·ads.txt 세 방법 모두 충족 |
+| 사이트 검토 요청 | 완료 (2026-07-31) — 결과 대기 중 |
+| 승인 후 **Ads**에서 Auto ads 켜기 | 남음 |
+| **Privacy & messaging**에서 CMP 메시지 설정 | 남음 (EEA·영국·스위스 트래픽이 있을 때 필요) |
 
-> **중요:** `ads.txt`는 도메인 루트에서만 인식됩니다.
-> `goyangmi.github.io/naver-blog-formatter/ads.txt`는 하위 경로라 인식되지 않고,
-> `goyangmi.github.io/ads.txt`는 이 저장소가 제어할 수 없는 위치입니다.
-> 광고 수익을 정상적으로 받으려면 커스텀 도메인(`subpathlaboratory.com`) 연결이 사실상 필요합니다.
-> 연결 방법은 `README.md`와 `DNS-SETUP.txt`에 있습니다.
+> `ads.txt`는 도메인 루트에서만 인식됩니다. `https://subpathlaboratory.com/ads.txt`로
+> 정상 응답하는 것을 확인했습니다.
 
 ## 승인 심사에서 걸릴 수 있는 것
 

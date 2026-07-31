@@ -1,16 +1,30 @@
-GitHub Pages 사용자: GOyangmi
-사용할 도메인: subpathlaboratory.com
+DNS 설정 (완료됨)
+==================
+도메인: subpathlaboratory.com
+등록기관·네임서버: Cloudflare
+적용일: 2026-07-31
 
-루트 도메인 A 레코드 (@):
-185.199.108.153
-185.199.109.153
-185.199.110.153
-185.199.111.153
+등록된 레코드
+-------------
+A      @      185.199.108.153    DNS only (회색 구름)
+A      @      185.199.109.153    DNS only
+A      @      185.199.110.153    DNS only
+A      @      185.199.111.153    DNS only
+CNAME  www    goyangmi.github.io  DNS only
 
-www CNAME:
-GOyangmi.github.io
+건드리면 안 되는 기존 레코드
+----------------------------
+MX     @      smtp.google.com                  ← Google Workspace 메일
+TXT    @      google-site-verification=...     ← 도메인 소유권 확인
 
-중요:
-- 기존 웹사이트가 연결돼 있다면 A/CNAME 변경 전에 영향을 확인하세요.
-- Google Workspace 메일용 MX 레코드와 도메인 인증용 TXT 레코드는 삭제하지 마세요.
-- GitHub 저장소 Settings > Pages에서 Custom domain과 HTTPS 상태를 확인하세요.
+주의
+----
+- 프록시(주황 구름)를 켜면 GitHub Pages의 HTTPS 인증서 발급·갱신이 막힙니다.
+  반드시 DNS only(회색 구름)로 유지하세요.
+- 위 IP는 GitHub Pages의 고정 주소입니다. GitHub이 변경을 공지하면 갱신이 필요합니다.
+  https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site
+
+확인 방법
+---------
+dig +short subpathlaboratory.com A
+dig +short www.subpathlaboratory.com CNAME
