@@ -5,8 +5,8 @@
  *   node tools/build.js
  *
  * src/<이름>.html 의 본문을 읽어 공통 머리말·헤더·푸터를 씌운 뒤
- * 저장소 루트에 <이름>.html 로 씁니다. sitemap.xml, assets/config.js,
- * robots.txt, ads.txt 도 함께 갱신합니다.
+ * 저장소 루트에 <이름>.html 로 씁니다. sitemap.xml, robots.txt, ads.txt 도
+ * 함께 갱신합니다.
  *
  * 페이지를 추가하려면 tools/pages.js 에 항목을 넣고 src/ 에 본문 파일을 만드세요.
  * 루트의 .html 은 생성물이므로 직접 고치지 말고 src/ 를 고친 뒤 다시 실행하세요.
@@ -75,7 +75,11 @@ ${links}
 
 function renderPage(page, body) {
   const scripts = (page.scripts || []).map(src => `  <script src="${src}"></script>`).join('\n');
-  const adsLoader = page.ads ? '\n  <script defer src="assets/adsense-loader.js"></script>' : '';
+  // AdSense 게시자 스크립트는 정적으로 넣는다.
+  // JS로 주입하면 HTML 소스에 남지 않아 소유권 확인 크롤러가 못 볼 수 있다.
+  const adsScript = page.ads
+    ? `\n  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE.adsenseClient}" crossorigin="anonymous"></script>`
+    : '';
   const robots = page.noindex ? '\n  <meta name="robots" content="noindex" />' : '';
   const title = fullTitle(page);
 
@@ -99,8 +103,7 @@ function renderPage(page, body) {
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="assets/styles.css" />
   <title>${title}</title>${robots}
-  <script src="assets/config.js"></script>
-  <script defer src="assets/site.js"></script>${adsLoader}
+  <script defer src="assets/site.js"></script>${adsScript}
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -129,17 +132,6 @@ function buildSitemap() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${entries}
 </urlset>
-`;
-}
-
-function buildConfig() {
-  return `window.SUBPATH_SITE_CONFIG = Object.freeze({
-  siteName: ${JSON.stringify(SITE.name)},
-  siteUrl: ${JSON.stringify(SITE.url)},
-  adsenseEnabled: true,
-  adsenseClient: ${JSON.stringify(SITE.adsenseClient)},
-  updatedAt: ${JSON.stringify(SITE.updatedAt)}
-});
 `;
 }
 
@@ -174,11 +166,10 @@ function main() {
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), buildSitemap(), 'utf8');
   fs.writeFileSync(path.join(ROOT, 'robots.txt'), buildRobots(), 'utf8');
   fs.writeFileSync(path.join(ROOT, 'ads.txt'), buildAdsTxt(), 'utf8');
-  fs.writeFileSync(path.join(ROOT, 'assets', 'config.js'), buildConfig(), 'utf8');
 
   console.log(`페이지 ${written.length}개 생성 완료`);
   console.log(`  광고 로드: ${PAGES.filter(p => p.ads).length}개 / 광고 없음: ${PAGES.filter(p => !p.ads).length}개`);
-  console.log('  sitemap.xml, robots.txt, ads.txt, assets/config.js 갱신');
+  console.log('  sitemap.xml, robots.txt, ads.txt 갱신');
   if (missing.length) {
     console.error(`\n본문 파일이 없습니다: ${missing.join(', ')}`);
     console.error(`  src/ 아래에 만들어 주세요.`);
@@ -188,4 +179,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { renderPage, buildSitemap, buildConfig, buildAdsTxt, buildRobots };
+module.exports = { renderPage, buildSitemap, buildAdsTxt, buildRobots };
