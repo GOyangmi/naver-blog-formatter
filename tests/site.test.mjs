@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 import { domain } from '../tools/content.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -41,7 +42,8 @@ test('local assets, page links and fragment targets exist', async () => {
     for (const [, value] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
       if (/^(?:https:|mailto:)/.test(value)) continue;
       const [pathname, fragment] = value.split('#');
-      const target = pathname ? resolve(root, pathname === '/' ? 'index.html' : pathname.replace(/^\//, '')) : resolve(root, name);
+      const cleanPath = pathname.split('?')[0];
+      const target = cleanPath ? resolve(root, cleanPath === '/' ? 'index.html' : cleanPath.replace(/^\//, '')) : resolve(root, name);
       assert.ok(target.startsWith(root));
       assert.ok((await stat(target)).isFile(), `${name}: ${value}`);
       if (fragment) assert.ok((await readFile(target, 'utf8')).includes(`id="${fragment}"`), `${name}: ${value}`);
@@ -84,4 +86,9 @@ test('privacy copy is scoped to this website and names hosting IP logs', async (
   assert.match(ko, /GitHub Pages는 보안을 위해 방문자의 IP 주소를 기록/);
   assert.match(en, /only to the Subpath Laboratory company website/);
   assert.match(en, /GitHub Pages logs visitor IP addresses/);
+});
+
+test('every page busts stale blog CSS caches with a content hash', async () => {
+  const hash = createHash('sha256').update(await readFile(resolve(root, 'assets/styles.css'))).digest('hex').slice(0, 16);
+  for (const page of pages) assert.ok((await read(page)).includes(`assets/styles.css?v=${hash}`));
 });

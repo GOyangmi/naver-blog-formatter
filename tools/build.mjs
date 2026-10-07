@@ -1,8 +1,10 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { content, domain, email } from './content.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
+const styleVersion = createHash('sha256').update(await readFile(`${root}assets/styles.css`)).digest('hex').slice(0, 16);
 const origin = `https://${domain}`;
 const escape = (text) => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 const paths = { ko: 'index.html', en: 'en.html' };
@@ -34,7 +36,7 @@ function shell(lang, body, { privacy = false, missing = false } = {}) {
   <meta property="og:description" content="${escape(t.description)}">
   <meta property="og:url" content="${canonical}">
   <meta name="theme-color" content="#ffffff">
-  <link rel="stylesheet" href="${missing ? '/' : './'}assets/styles.css">
+  <link rel="stylesheet" href="${missing ? '/' : './'}assets/styles.css?v=${styleVersion}">
 </head>
 <body>
   <a class="skip-link" href="#main">${t.skip}</a>
