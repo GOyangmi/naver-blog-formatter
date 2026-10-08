@@ -110,6 +110,9 @@ test('the public operator name is jaesic and the introduction is minimal', async
     assert.equal(content[lang].aboutLegal, undefined);
     assert.ok((await read(lang === 'ko' ? 'index.html' : 'en.html')).includes(content[lang].about));
   }
+  for (const page of pages) {
+    assert.doesNotMatch(await read(page), /\uCD5C\uC7AC\uC11D|Jae(?:seok)|Seoul|서울|생활을 정리|작게 시작/i);
+  }
 });
 
 test('all pages have a script-free CSP without pretending meta can block framing', async () => {
