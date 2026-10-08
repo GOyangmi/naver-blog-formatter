@@ -2,6 +2,8 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { content, domain, email } from './content.mjs';
+import { contentPolicy } from './security.mjs';
+import { preparePublish } from './publish.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const styleVersion = createHash('sha256').update(await readFile(`${root}assets/styles.css`)).digest('hex').slice(0, 16);
@@ -21,6 +23,7 @@ function shell(lang, body, { privacy = false, missing = false } = {}) {
 <html lang="${lang}">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="${escape(contentPolicy)}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -74,7 +77,6 @@ function home(lang) {
   const t = content[lang];
   return shell(lang, `<main id="main" class="wrap">
     <section class="intro" aria-labelledby="company-title">
-      <p class="eyebrow">${t.location}</p>
       <h1 id="company-title">Subpath Laboratory</h1>
       <p class="intro-line">${t.intro}</p>
     </section>
@@ -102,7 +104,7 @@ function home(lang) {
     </section>
     <section id="about" class="about info-row" aria-labelledby="about-title">
       <h2 id="about-title">${t.aboutTitle}</h2>
-      <div><p>${t.about}</p><p class="note">${t.aboutLegal}</p></div>
+      <div><p>${t.about}</p></div>
     </section>
     <section id="contact" class="contact info-row" aria-labelledby="contact-title">
       <h2 id="contact-title">${t.contactTitle}</h2>
@@ -117,8 +119,10 @@ function privacy(lang) {
     <h1>${t.privacyTitle}</h1>
     <p>${t.privacyIntro}</p>
     ${t.privacySections.map(([title, text]) => `<section><h2>${title}</h2><p>${text}</p></section>`).join('\n')}
+    <section id="content-use"><h2>${t.contentTitle}</h2><p>${t.contentUse}</p><p>${t.contentRights}</p></section>
     <p><a href="mailto:${email}">${email}</a></p>
     <p><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a></p>
+    <p><a href="https://www.cloudflare.com/privacypolicy/">Cloudflare Privacy Policy</a></p>
     <a class="text-link" href="./${paths[lang]}">${t.back}</a>
   </main>`, { privacy: true });
 }
@@ -130,6 +134,8 @@ for (const lang of ['ko', 'en']) {
 }
 await writeFile(`${root}404.html`, shell('ko', `<main id="main" class="wrap document"><p class="eyebrow">404</p><h1>${content.ko.notFound}</h1><p>${content.ko.notFoundBody}</p><a class="text-link" href="/">${content.ko.back}</a><p lang="en">${content.en.notFoundBody}</p></main>`, { missing: true }));
 await writeFile(`${root}CNAME`, `${domain}\n`);
-await writeFile(`${root}robots.txt`, `User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`);
+await writeFile(`${root}robots.txt`, `# Search indexing and AI-assisted information retrieval are allowed.\n# Content use: ${origin}/privacy-en.html#content-use\nUser-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`);
 await writeFile(`${root}sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', 'en.html', 'privacy.html', 'privacy-en.html'].map((path) => `  <url><loc>${origin}/${path}</loc></url>`).join('\n')}\n</urlset>\n`);
 console.log(`Built 5 pages for ${origin}`);
+await preparePublish(root, `${root}docs`);
+console.log('Prepared allowlisted GitHub Pages /docs output');

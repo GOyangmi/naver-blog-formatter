@@ -15,9 +15,13 @@ Edit `tools/content.mjs`, `tools/build.mjs` and `assets/styles.css`. The root HT
 
 ## Deployment
 
-The existing GitHub Pages repository publishes the `main` branch root. The production domain is set in `tools/content.mjs` and must match DNS and the GitHub Pages custom domain. Do not change MX, mail-verification TXT or unrelated subdomain records.
+GitHub Pages publishes only the generated `main` branch `/docs` directory. `tools/publish.mjs` defines the complete public-file allowlist and refuses unexpected files and symlinks. Run build and tests before publishing. The production domain must match DNS and the GitHub Pages custom domain. Do not change MX, mail-verification TXT or unrelated subdomain records.
 
-`subpathlabo.com` is the intended canonical domain. Until Cloudflare access and HTTPS readiness are verified, this checkout retains the working `subpathlaboratory.com` CNAME. After migration, the long domain should permanently redirect to the canonical site through Cloudflare; old blog paths should not serve the retired blog content.
+`https://subpathlabo.com/` is the canonical domain. The long domain permanently redirects through Cloudflare. Old blog paths return the company 404.
+
+Public operator name: `jaesic`. Do not add legal identity, home address or personal contact details to public pages or metadata. Official account verification and legal records are separate from this site.
+
+The script-free site uses a restrictive CSP meta tag. `tools/security.mjs` also defines CDN response headers; verify them on production, since generating HTML does not configure the CDN. Keep crawler access open. Robots directives and content-use notices are not access controls, and public HTML/images cannot be hidden from developer tools. The public repository and its history remain readable.
 
 The old blog is preserved in Git history. The operator also has a byte-verified local backup outside the public website repository. Do not publish backups, credentials, business identity documents or home-address information.
 

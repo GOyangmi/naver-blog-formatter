@@ -1,10 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, readdir, stat } from 'node:fs/promises';
+import { readFile, readdir, stat, mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
-import { domain, email } from '../tools/content.mjs';
+import { content, domain, email, publicName } from '../tools/content.mjs';
+import { contentPolicy, responseHeaders } from '../tools/security.mjs';
+import { listFiles, preparePublish, publicFiles } from '../tools/publish.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const pages = ['index.html', 'en.html', 'privacy.html', 'privacy-en.html', '404.html'];
@@ -94,9 +96,86 @@ test('privacy copy is scoped to this website and names hosting IP logs', async (
   const ko = await read('privacy.html');
   const en = await read('privacy-en.html');
   assert.match(ko, /회사 소개 사이트에만 적용/);
-  assert.match(ko, /GitHub Pages는 보안을 위해 방문자의 IP 주소를 기록/);
+  assert.match(ko, /GitHub Pages와 Cloudflare가 IP 주소/);
   assert.match(en, /only to the Subpath Laboratory company website/);
-  assert.match(en, /GitHub Pages logs visitor IP addresses/);
+  assert.match(en, /GitHub Pages and Cloudflare process connection information, including IP addresses/);
+});
+
+test('the public operator name is jaesic and the introduction is minimal', async () => {
+  assert.equal(publicName, 'jaesic');
+  assert.equal(content.ko.about, 'Subpath Laboratory는 jaesic이 운영하는 1인 앱·게임 개발 스튜디오입니다.');
+  assert.equal(content.en.about, 'Subpath Laboratory is a one-person app and game studio run by jaesic.');
+  for (const lang of ['ko', 'en']) {
+    assert.equal(content[lang].location, undefined);
+    assert.equal(content[lang].aboutLegal, undefined);
+    assert.ok((await read(lang === 'ko' ? 'index.html' : 'en.html')).includes(content[lang].about));
+  }
+});
+
+test('all pages have a script-free CSP without pretending meta can block framing', async () => {
+  for (const name of pages) {
+    const html = await read(name);
+    assert.ok(html.includes(`<meta http-equiv="Content-Security-Policy" content="${contentPolicy}">`));
+    assert.ok(html.indexOf('Content-Security-Policy') < html.indexOf('<link rel="stylesheet"'));
+    assert.doesNotMatch(html, /<script\b|\son\w+\s*=|javascript:|<base\b/i);
+  }
+  assert.ok(contentPolicy.includes("default-src 'none'"));
+  assert.ok(contentPolicy.includes("script-src 'none'"));
+  assert.ok(contentPolicy.includes("form-action 'none'"));
+  assert.ok(!contentPolicy.includes('frame-ancestors'));
+  assert.ok(responseHeaders['Content-Security-Policy'].includes("frame-ancestors 'none'"));
+  assert.equal(responseHeaders['X-Content-Type-Options'], 'nosniff');
+});
+
+test('crawling and AI retrieval are allowed without granting unrestricted reuse', async () => {
+  const robots = await read('robots.txt');
+  assert.match(robots, /User-agent: \*\nAllow: \/\n/);
+  assert.doesNotMatch(robots, /Disallow:/);
+  for (const name of ['index.html', 'en.html', 'privacy.html', 'privacy-en.html']) {
+    assert.doesNotMatch(await read(name), /noindex|nofollow|noai|noimageai/i);
+  }
+  const ko = await read('privacy.html');
+  const en = await read('privacy-en.html');
+  assert.match(ko, /AI 기반 정보 조회·요약을 허용/);
+  assert.match(ko, /법령이 허용하는 이용과 개별 라이선스/);
+  assert.match(en, /Search indexing and AI-assisted retrieval and summarization/);
+  assert.match(en, /Uses permitted by law and individual licenses remain unaffected/);
+  assert.match(en, /Third-party materials/);
+});
+
+test('the deployed directory contains only the public allowlist with identical bytes', async () => {
+  assert.deepEqual(await listFiles(resolve(root, 'docs')), [...publicFiles].sort());
+  for (const file of publicFiles) {
+    assert.deepEqual(await readFile(resolve(root, 'docs', file)), await readFile(resolve(root, file)), file);
+    assert.doesNotMatch(file, /(?:^|\/)(?:tools|tests|\.git|\.env|\.backups|package\.json)(?:\/|$)/);
+    if (/\.(html|css|txt|xml)$/.test(file)) {
+      const text = await read(file);
+      assert.doesNotMatch(text, /-----BEGIN [A-Z ]*PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9]{30,}|sk-ant-[A-Za-z0-9_-]{20,}/);
+    }
+  }
+});
+
+test('publish refuses unknown output files and symlinks', async () => {
+  const scratch = resolve(root, '.test-output');
+  await mkdir(scratch, { recursive: true });
+  const fixture = await mkdtemp(`${scratch}/publish-`);
+  try {
+    const unexpected = resolve(fixture, 'unexpected');
+    await mkdir(unexpected);
+    await writeFile(resolve(unexpected, '.env'), 'synthetic-do-not-publish');
+    await assert.rejects(preparePublish(root, unexpected), /Unexpected publish files/);
+    assert.equal(await readFile(resolve(unexpected, '.env'), 'utf8'), 'synthetic-do-not-publish');
+    const linked = resolve(fixture, 'linked');
+    await mkdir(linked);
+    await symlink(resolve(root, 'index.html'), resolve(linked, 'index.html'));
+    await assert.rejects(preparePublish(root, linked), /Non-regular publish entry/);
+    const source = resolve(fixture, 'source');
+    await mkdir(source);
+    await symlink(resolve(root, '.nojekyll'), resolve(source, '.nojekyll'));
+    await assert.rejects(preparePublish(source, resolve(fixture, 'output')), /Not a regular source file/);
+  } finally {
+    await rm(fixture, { recursive: true });
+  }
 });
 
 test('every page busts stale blog CSS caches with a content hash', async () => {
