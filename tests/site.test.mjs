@@ -4,7 +4,7 @@ import { readFile, readdir, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
-import { domain } from '../tools/content.mjs';
+import { domain, email } from '../tools/content.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const pages = ['index.html', 'en.html', 'privacy.html', 'privacy-en.html', '404.html'];
@@ -68,6 +68,17 @@ test('domain metadata and sitemap match Pages CNAME', async () => {
   assert.equal((sitemap.match(/<loc>/g) ?? []).length, 4);
   assert.ok((await read('robots.txt')).includes(`https://${domain}/sitemap.xml`));
   assert.match(await read('404.html'), /name="robots" content="noindex"/);
+});
+
+test('the company website and business email share the same domain', async () => {
+  assert.equal(domain, 'subpathlabo.com');
+  assert.equal(email.split('@')[1], domain);
+  for (const name of pages) {
+    const html = await read(name);
+    assert.doesNotMatch(html, /https:\/\/(?:www\.)?subpathlaboratory\.com/);
+    assert.ok(html.includes(`property="og:url" content="https://${domain}/`));
+  }
+  assert.doesNotMatch(await read('sitemap.xml'), /subpathlaboratory\.com/);
 });
 
 test('old generated pages, advertising files and tool engines are removed', async () => {

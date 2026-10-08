@@ -1,4 +1,4 @@
-export const domain = 'subpathlaboratory.com';
+export const domain = 'subpathlabo.com';
 export const email = 'jaesic@subpathlabo.com';
 
 export const content = {
