@@ -30,6 +30,14 @@ export const content = {
     about: `Subpath Laboratory는 ${publicName}이 운영하는 1인 앱·게임 개발 스튜디오입니다.`,
     contactTitle: '문의', contact: '서비스 문의와 협업 제안은 이메일로 보내주세요.',
     privacy: '개인정보·콘텐츠 안내',
+    businessTitle: '사업자 정보',
+    businessDetails: [
+      ['상호', '서브패스 래버러토리(Subpath Laboratory)'],
+      ['대표자', '최재석'],
+      ['사업자등록번호', '201-22-70135'],
+      ['개업일', '2026년 7월 22일'],
+      ['사업 형태', '대한민국 개인사업자']
+    ],
     privacyTitle: '사이트 이용 안내',
     privacyIntro: '이 안내는 Subpath Laboratory 회사 소개 사이트에만 적용됩니다. 각 앱과 게임의 개인정보처리방침은 해당 서비스 사이트에서 확인할 수 있습니다.',
     privacySections: [
@@ -69,6 +77,14 @@ export const content = {
     about: `Subpath Laboratory is a one-person app and game studio run by ${publicName}.`,
     contactTitle: 'Contact', contact: 'For product questions and collaboration, reach us by email.',
     privacy: 'Privacy & content use', privacyTitle: 'Website notice',
+    businessTitle: 'Business information',
+    businessDetails: [
+      ['Registered business name', 'Subpath Laboratory (서브패스 래버러토리)'],
+      ['Representative', 'CHOI JAESEOK (최재석)'],
+      ['Business registration number', '201-22-70135'],
+      ['Business start date', 'July 22, 2026'],
+      ['Business type', 'Sole proprietorship registered in South Korea']
+    ],
     privacyIntro: 'This notice applies only to the Subpath Laboratory company website. Each app and game has its own privacy policy on its product website.',
     privacySections: [
       ['Website', 'There are no sign-up or contact forms, advertising or analytics scripts. GitHub Pages and Cloudflare process connection information, including IP addresses, to deliver and secure this website.'],

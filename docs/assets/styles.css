@@ -57,7 +57,13 @@ li::marker { color: #75877d; }
 .info-row p { font-size: 15px; }
 .info-row p.note { font-size: 12px; }
 .contact-email { display: inline-block; min-height: 44px; font-size: 20px; font-weight: 600; margin-top: 10px; }
-.footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; border-top: 1px solid var(--line); padding-block: 24px; color: var(--muted); font-size: 12px; }
+.footer { border-top: 1px solid var(--line); padding-block: 24px; color: var(--muted); font-size: 12px; }
+.business-info h2 { font-size: 13px; }
+.business-info dl { margin: 12px 0 16px; display: grid; gap: 5px; }
+.business-info dl > div { display: flex; flex-wrap: wrap; column-gap: 12px; }
+.business-info dt { font-weight: 600; }
+.business-info dd { margin: 0; }
+.footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 20px; }
 .footer a { min-height: 44px; display: inline-flex; align-items: center; }
 .document { max-width: 760px; min-height: 65vh; padding-block: 56px; }
 .document h1 { font-size: 32px; margin-bottom: 24px; }

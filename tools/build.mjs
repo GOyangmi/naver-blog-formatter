@@ -54,8 +54,14 @@ function shell(lang, body, { privacy = false, missing = false } = {}) {
   </header>
   ${body}
   <footer class="footer wrap">
-    <p>&copy; 2026 Subpath Laboratory</p>
-    <a href="${missing ? '/' : './'}${privacyPaths[lang]}">${t.privacy}</a>
+    <section class="business-info" aria-labelledby="business-title">
+      <h2 id="business-title">${t.businessTitle}</h2>
+      <dl>${t.businessDetails.map(([label, value]) => `<div><dt>${escape(label)}</dt><dd>${escape(value)}</dd></div>`).join('')}</dl>
+    </section>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Subpath Laboratory</p>
+      <a href="${missing ? '/' : './'}${privacyPaths[lang]}">${t.privacy}</a>
+    </div>
   </footer>
 </body>
 </html>

@@ -19,7 +19,7 @@ GitHub Pages publishes only the generated `main` branch `/docs` directory. `tool
 
 `https://subpathlabo.com/` is the canonical domain. The long domain permanently redirects through Cloudflare. Old blog paths return the company 404.
 
-Public operator name: `jaesic`. Do not add legal identity, home address or personal contact details to public pages or metadata. Official account verification and legal records are separate from this site.
+Public operator alias: `jaesic`. At the owner's explicit request on October 13, 2026, the bilingual footer identifies the registered business name, representative, business registration number, business start date and country/type for company verification. These fields were checked against the Korean registration certificate and English Certificate of Business Registration. Do not publish certificate scans, home address, birth date, personal ID numbers or private contact details.
 
 The script-free site uses a restrictive CSP meta tag. `tools/security.mjs` also defines CDN response headers; verify them on production, since generating HTML does not configure the CDN. Keep crawler access open. Robots directives and content-use notices are not access controls, and public HTML/images cannot be hidden from developer tools. The public repository and its history remain readable.
 

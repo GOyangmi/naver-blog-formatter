@@ -101,7 +101,7 @@ test('privacy copy is scoped to this website and names hosting IP logs', async (
   assert.match(en, /GitHub Pages and Cloudflare process connection information, including IP addresses/);
 });
 
-test('the public operator name is jaesic and the introduction is minimal', async () => {
+test('the introduction keeps the operator alias and the footer identifies the registered business', async () => {
   assert.equal(publicName, 'jaesic');
   assert.equal(content.ko.about, 'Subpath Laboratory는 jaesic이 운영하는 1인 앱·게임 개발 스튜디오입니다.');
   assert.equal(content.en.about, 'Subpath Laboratory is a one-person app and game studio run by jaesic.');
@@ -111,7 +111,13 @@ test('the public operator name is jaesic and the introduction is minimal', async
     assert.ok((await read(lang === 'ko' ? 'index.html' : 'en.html')).includes(content[lang].about));
   }
   for (const page of pages) {
-    assert.doesNotMatch(await read(page), /\uCD5C\uC7AC\uC11D|Jae(?:seok)|Seoul|서울|생활을 정리|작게 시작/i);
+    const html = await read(page);
+    assert.match(html, /201-22-70135/);
+    assert.match(html, /최재석/);
+    assert.match(html, /서브패스 래버러토리/);
+    assert.match(html, /id="business-title"/);
+    assert.match(html, page.includes('en') ? /July 22, 2026/ : /2026년 7월 22일/);
+    assert.doesNotMatch(html, /Seoul|서울|난곡|Nangok|2005|050929|생활을 정리|작게 시작/i);
   }
 });
 
