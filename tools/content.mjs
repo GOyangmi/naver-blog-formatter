@@ -35,6 +35,7 @@ export const content = {
       ['상호', '서브패스 래버러토리(Subpath Laboratory)'],
       ['대표자', '최재석'],
       ['사업자등록번호', '201-22-70135'],
+      ['D-U-N-S 번호', '697009647'],
       ['개업일', '2026년 7월 22일'],
       ['사업 형태', '대한민국 개인사업자']
     ],
@@ -82,6 +83,7 @@ export const content = {
       ['Registered business name', 'Subpath Laboratory (서브패스 래버러토리)'],
       ['Representative', 'CHOI JAESEOK (최재석)'],
       ['Business registration number', '201-22-70135'],
+      ['D-U-N-S Number', '697009647'],
       ['Business start date', 'July 22, 2026'],
       ['Business type', 'Sole proprietorship registered in South Korea']
     ],
